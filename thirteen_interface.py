@@ -1,14 +1,15 @@
 # Author: Administrator
 # date: 2019/10/17  16:33
 
+import json
 import requests
+
+global id, token, user_id
 
 class pokerCard:
     def __init__(self, color, number):
         self.color = color
         self.number = number
-
-wholePoker1 = []
 
 def colorToNum(str):
     if str == '$':
@@ -44,99 +45,121 @@ def numToPoker(x):
     return str(x)
 
 def login():
-    '''
+    """
     包括登入，注册，验证
-    '''
+    """
     global token, user_id
-    url = "https://api.shisanshui.rtxux.xyz/auth/login"
+    url = "http://www.revth.com:12300/auth/login"
     print("请输入用户名与密码：")
     username = input()
     password = input()
-    headers = {"content-type" : "application/json"}
+    headers = {"content-type": "application/json"}
     formdata = {"username": username, "password": password}
-    response = requests.post(url, data=formdata, headers=headers)
+    response = requests.post(url, data=json.dumps(formdata), headers=headers, verify=False)
     res = response.json()   #转为json格式便于引用
-    if res['status'] != '0':
+    print(res)
+    if res['status'] != 0:
         print("用户不存在，请注册后登入：")
         print("请输入要注册的用户名与密码")
         username = input()
         password = input()
-        url = "https://api.shisanshui.rtxux.xyz/auth/register"
+        print("请绑定学号+密码：")
+        student_number = input()
+        student_password = input()
+        url = "http://www.revth.com:12300/auth/register2"
+        headers = {"content-type": "application/json"}
+        formdata = {
+            "username": username,
+            "password": password,
+            "student_number": student_number,
+            "student_password": student_password
+        }
+        response = requests.post(url, data=json.dumps(formdata), headers=headers, verify=False)
+        print("注册情况:" + response.text)
+        url = "http://www.revth.com:12300/auth/login"
         headers = {"content-type": "application/json"}
         formdata = {"username": username, "password": password}
-        response = requests.post(url, data=formdata, headers=headers)
-        print("注册情况:"+ response.text)
-        url = "https://api.shisanshui.rtxux.xyz/auth/login"
-        print("请输入用户名与密码：")
-        username = input()
-        password = input()
-        headers = {"content-type": "application/json"}
-        formdata = {"username": username, "password": password}
-        response = requests.post(url, data=formdata, headers=headers)
+        response = requests.post(url, data=json.dumps(formdata), headers=headers, verify=False)
+        print(type(response))
         res = response.json()
-    token = res['data']['token']
-    user_id = res['data']['user_id']
-    print("登入状态:"+ response.text)
-    url = "https://api.shisanshui.rtxux.xyz/auth/validate"
+        print(type(res))
+        print(res)
+    token = res["data"]["token"]
+    user_id = res["data"]["user_id"]
+    print("登入状态:" + response.text)
+    url = "http://www.revth.com:12300/auth/validate"
     headers = {"X-Auth-Token": token}
     response = requests.get(url, headers=headers)
-    print("检测状态:"+ response.text)
+    print("检测状态:" + response.text)
 
 def ranking():
-    '''
+    """
     排行榜
-    '''
-    url = "https://api.shisanshui.rtxux.xyz/rank"
+    """
+    url = "http://www.revth.com:12300/rank"
     response = requests.get(url)
     print(response.text)
 
 def historicalRecords(limit, page):
-    '''
+    """
     历史战局列表
-    '''
-    global user_id
-    url = 'https://api.shisanshui.rtxux.xyz/history'
+    """
+    global user_id, token
+    url = 'http://www.revth.com:12300/history'
     headers = {'X-Auth-Token': token}
-    params = {'player_id': use,'limit': limit,'page': page}
+    params = {'player_id': user_id, 'limit': limit, 'page': page}
     response = requests.get(url, params=params, headers=headers)
     print(response.text)
 
 def historicalRecordsDetail():
-    '''
+    """
     历史战局详情
-    '''
-    global id
-    url = 'https://api.shisanshui.rtxux.xyz/history/{id}'
+    """
+    global id, token
+    url = 'http://www.revth.com:12300/history/{id}'
     headers = {'X-Auth-Token': token}
-    params = {'id':id}
+    params = {'id': id}
     response = requests.get(url, params=params, headers=headers)
     print(response.text)
 
 def startGame():
-    '''
+    """
     包括开始战局和初始化牌
-    '''
+    """
+    wholePoker = []
     global token, id
-    url = "https://api.shisanshui.rtxux.xyz/game/open"
+    url = "http://www.revth.com:12300/game/open"
     headers = {"X-Auth-Token": token}
     response = requests.post(url, headers=headers)
     ret = response.json()
     print(response.text)
-    id = ret['data']['id'];
+    id = ret['data']['id']
     card = ret['data']['card']
     card = card.replace('10', 'T')
     for i in range(0, 13):
         i *= 3
         temp = card[i+1]
         if temp == 'T':
-            wholePoker1.append(pokerCard(colorToNum(card[i]), 10))
+            wholePoker.append(pokerCard(colorToNum(card[i]), 10))
         elif temp == 'J':
-            wholePoker1.append(pokerCard(colorToNum(card[i]), 11))
+            wholePoker.append(pokerCard(colorToNum(card[i]), 11))
         elif temp == 'Q':
-            wholePoker1.append(pokerCard(colorToNum(card[i]), 12))
+            wholePoker.append(pokerCard(colorToNum(card[i]), 12))
         elif temp == 'K':
-            wholePoker1.append(pokerCard(colorToNum(card[i]), 13))
+            wholePoker.append(pokerCard(colorToNum(card[i]), 13))
         elif temp == 'A':
-            wholePoker1.append(pokerCard(colorToNum(card[i]), 14))
+            wholePoker.append(pokerCard(colorToNum(card[i]), 14))
         else:
-            wholePoker1.append(pokerCard(colroToNum(card[i]), int(temp)))
+            wholePoker.append(pokerCard(colorToNum(card[i]), int(temp)))
+    return wholePoker
+
+def submitGame(lastPoker):
+    """
+    提交牌
+    """
+    global id, token
+    url = "http://www.revth.com:12300/game/submit"
+    headers = {"X-Auth-Token": token, "content-type": "application/json"}
+    formdata = {"id": id, "card": lastPoker}
+    response = requests.post(url, data=json.dumps(formdata), headers=headers, verify=False)
+    print(response.text)

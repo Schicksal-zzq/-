@@ -1,34 +1,55 @@
 # Author: Administrator
 # date: 2019/10/17  21:28
 
+import time
 from thirteen_interface import *
-from thirteen_interface import wholePoker1
 
 ans1, ans2, ans3 = [], [], []   #标记
 shui1, shui2, shui3 = 0.0, 0.0, 0.0     #水水水
-bottomPoker, middlePoker, topPoker = [], [], []   #最终的牌
 currentshui1, currentshui2, currentshui3 = 0.0, 0.0, 0.0    #临时
+bottomPoker, middlePoker, topPoker, lastPoker= [], [], [], []   #最终的牌
 currentscore1, currentscore2, currentscore3 = 0.0, 0.0, 0.0     #临时
 wholePoker1, wholePoker2, wholePoker3 = [], [], []    #分堆的牌
 currentBottomPoker, currentMiddlePoker, currentTopPoker = [], [], []    #临时的牌
 
-for i in range(0,15):
-    ans1.append(0)
-    ans2.append(0)
-    ans3.append(0)
-    bottomPoker.append(pokerCard(0, 0))
-    middlePoker.append(pokerCard(0, 0))
-    topPoker.append(pokerCard(0, 0))
-    wholePoker1.append(pokerCard(0, 0))
-    wholePoker2.append(pokerCard(0, 0))
-    wholePoker3.append(pokerCard(0, 0))
-    currentTopPoker.append(pokerCard(0, 0))
-    currentMiddlePoker.append(pokerCard(0, 0))
-    currentBottomPoker.append(pokerCard(0, 0))
+def initAll():
+    ans1.clear()
+    ans2.clear()
+    ans3.clear()
+    topPoker.clear()
+    middlePoker.clear()
+    bottomPoker.clear()
+    wholePoker1.clear()
+    wholePoker2.clear()
+    wholePoker3.clear()
+    currentTopPoker.clear()
+    currentBottomPoker.clear()
+    currentMiddlePoker.clear()
+    global shui1, shui2, shui3
+    global currentshui1, currentshui2, currentshui3
+    global currentscore1, currentscore2, currentscore3
+    shui1, shui2, shui3 = 0.0, 0.0, 0.0
+    currentshui1, currentshui2, currentshui3 = 0.0, 0.0, 0.0
+    currentscore1, currentscore2, currentscore3 = 0.0, 0.0, 0.0
+
+    for i in range(0, 15):
+        ans1.append(0)
+        ans2.append(0)
+        ans3.append(0)
+        bottomPoker.append(pokerCard(0, 0))
+        middlePoker.append(pokerCard(0, 0))
+        topPoker.append(pokerCard(0, 0))
+        wholePoker1.append(pokerCard(0, 0))
+        wholePoker2.append(pokerCard(0, 0))
+        wholePoker3.append(pokerCard(0, 0))
+        currentTopPoker.append(pokerCard(0, 0))
+        currentMiddlePoker.append(pokerCard(0, 0))
+        currentBottomPoker.append(pokerCard(0, 0))
 
 
 def getnumber(x):
     return x.number
+
 
 def typeOfPokerCard(x):
     """先处理同花顺，顺子和同花"""
@@ -97,25 +118,26 @@ def typeOfPokerCard(x):
     score = 1+(a[4]/1000)+(a[3]/100000)+(a[2]/10000000)+(a[1]/1000000000)+(a[0]/100000000000)+0.1
     return score
 
+
 def getTopScore():
-    global currentshui1
+    global currentshui1, currentTopPoker
     a = currentTopPoker[0].number
     b = currentTopPoker[1].number
     c = currentTopPoker[2].number
     if a == b and b == c:
         topScore = 4+((a+b+c)/1000)+0.4
     elif a == b:
-        topScore = 2+((a+b)/1000)+c/10000+0.2
+        topScore = 2+((a+b)/1000)+c/100000+0.2
     elif b == c:
-        topScore = 2+((b+c)/1000)+a/10000+0.2
+        topScore = 2+((b+c)/1000)+a/100000+0.2
     else:
-        topScore = 1+(a+b+c)/10000+0.1
+        topScore = 1+c/1000+b/100000+c/10000000+0.1
     currentshui1 = topScore-int(topScore)+1
     return topScore
 
+
 def getMiddleScore():
-    global currentshui2
-    currentMiddlePoker.sort(key=getnumber)
+    global currentshui2, currentMiddlePoker
     score = typeOfPokerCard(currentMiddlePoker)
     types = int(score)
     if types == 9:
@@ -128,9 +150,9 @@ def getMiddleScore():
         currentshui2 = score-int(score)+1
     return score
 
+
 def getBottomScore():
-    global currentshui3
-    currentBottomPoker.sort(key=getnumber)
+    global currentshui3, currentBottomPoker
     score = typeOfPokerCard(currentBottomPoker)
     types = int(score)
     if types == 9:
@@ -141,7 +163,9 @@ def getBottomScore():
         currentshui3 = score-int(score)+1
     return score
 
+
 def checkBestPoker():
+    global currentscore1, currentscore2, currentscore3
     """计算头墩, 规则里面没说头墩有其他情况，我当然选择不做其他判断啦。:O(∩_∩)O~"""
     currentscore1 = getTopScore()
     '''计算中墩'''
@@ -151,7 +175,8 @@ def checkBestPoker():
 
     if currentscore1 <= currentscore2 <= currentscore3:
         ret = 0
-        global shui1, shui2, shui3
+        global shui1, shui2, shui3, currentshui1, currentshui2, currentshui3
+        global middlePoker, bottomPoker, topPoker, currentTopPoker, currentMiddlePoker, currentBottomPoker
         if currentshui1 > shui1:
             ret += int(currentshui1)
         elif currentshui1 < shui1:
@@ -174,13 +199,15 @@ def checkBestPoker():
             for i in range(0, 3):
                 topPoker[i] = currentTopPoker[i]
 
+
 def getPokerCardTwo(n2, x2):
-    for t in range(n2, 9):
+    global ans2, currentMiddlePoker, wholePoker2, currentTopPoker
+    for t in range(n2, 8):
         ans2[t] = 1
         currentMiddlePoker[x2] = wholePoker2[t]
         if x2 == 4:
             cnt2 = 0
-            for j in range(0, 9):
+            for j in range(0, 8):
                 if ans2[j] == 0:
                     currentTopPoker[cnt2] = wholePoker2[j]  #剩下的牌就是前墩了
                     cnt2 += 1
@@ -189,24 +216,28 @@ def getPokerCardTwo(n2, x2):
             getPokerCardTwo(t+1, x2+1)
         ans2[t] = 0
 
+
 def getPokerCardOne(n1, x1):
-        for t in range(n1, 13):
-            ans1[t] = 1
-            currentBottomPoker[x1] = wholePoker1[t]
-            if x1 == 4:
-                cnt1 = 0
-                for j in range(0, 13):
-                    if ans1[j] == 0:
-                        wholePoker2[cnt1] = wholePoker1[j]   #把没用过的牌记下来
-                        cnt1 += 1
-                getPokerCardTwo(0, 0)
-            else:
-                getPokerCardOne(t+1, x1+1)
-            ans1[t] = 0
+    global ans1, currentBottomPoker, wholePoker1, wholePoker2
+    for t in range(n1, 13):
+        ans1[t] = 1
+        currentBottomPoker[x1] = wholePoker1[t]
+        if x1 == 4:
+            cnt1 = 0
+            for j in range(0, 13):
+                if ans1[j] == 0:
+                    wholePoker2[cnt1] = wholePoker1[j]   #把没用过的牌记下来
+                    cnt1 += 1
+            getPokerCardTwo(0, 0)
+        else:
+            getPokerCardOne(t+1, x1+1)
+        ans1[t] = 0
+
 
 def printPoker():
-    '''前墩'''
+    """前墩"""
     str = ""
+    global lastPoker, topPoker, middlePoker, bottomPoker
     for i in range(0, 3):
         if i < 2:
             str += (numToColor(topPoker[i].color))+(numToPoker(topPoker[i].number))+' '
@@ -237,14 +268,27 @@ def printPoker():
     return lastPoker
 
 
-#login()
-#startGame()
-
-
+login()
+i = 10
+while(i):
+    initAll()
+    wholePoker1 = startGame()
+    wholePoker1.sort(key=getnumber)
+    getPokerCardOne(0, 0)
+    lastPoker = []
+    lastPoker = printPoker()
+    submitGame(lastPoker)
+    i -= 1
+'''
+begin_time = time.time()
+initAll()
 wholePoker1 = [pokerCard(1,2),pokerCard(1,3),pokerCard(1,4),pokerCard(1,5),pokerCard(1,6),pokerCard(1,7),pokerCard(1,8),pokerCard(1,9),pokerCard(1,10),pokerCard(1,11),pokerCard(1,12),pokerCard(1,13),pokerCard(1,14)]
-'''冲冲冲，先拿三墩牌再说'''
+#冲冲冲，先拿三墩牌再说
+wholePoker1.sort(key=getnumber)
 getPokerCardOne(0, 0)
-
 lastPoker = []
 lastPoker = printPoker()
-#submitGame()
+#submitGame(lastPoker)
+end_time = time.time()
+print(end_time-begin_time)
+'''

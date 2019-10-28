@@ -283,7 +283,7 @@ def printPoker():
 
 ranking()
 login()
-i = 10
+i = 5
 while(i):
     initAll()
     wholePoker1 = startGame()

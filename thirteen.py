@@ -1,7 +1,5 @@
 # Author: Administrator
-# date: 2019/10/17  21:28
 
-import time
 import json
 from thirteen_interface import *
 
@@ -56,7 +54,6 @@ def getnumber(x):
 
 
 def typeOfPokerCard(x):
-    """先处理同花顺，顺子和同花"""
     a = []
     flag1, flag2 = 1, 1
     for i in range(0, 4):
@@ -76,22 +73,18 @@ def typeOfPokerCard(x):
         score = 6+(a[4]/100)+(a[3]/100000)+(a[2]/10000000)+(a[1]/1000000000)+(a[0]/100000000000)
         return score
 
-    '''炸弹情况'''
     if (a[0] == a[1] or a[3] == a[4]) and a[1] == a[2] and a[2] == a[3]:
         score = 8+((4*a[2])/100)
         return score
 
-    '''葫芦情况'''
     if (a[0] == a[1] and a[1] == a[2] and a[3] == a[4]) or (a[0] == a[1] and a[2] == a[3] and a[3] == a[4]):
         score = 7+((3*a[2])/100)
         return score
 
-    '''三条情况'''
     if a[0] == a[1] and a[1] == a[2] or a[1] == a[2] and a[2] == a[3] or a[2] == a[3] and a[3] == a[4]:
         score = 4+((3*a[2])/100)
         return score
 
-    '''二对情况'''
     if (a[0] == a[1] and a[2] == a[3]) or (a[1] == a[2] and a[3] == a[4]) or (a[0] == a[1] and a[3] == a[4]):
         if a[3] == a[1] + 1:
             score = 3+((2*a[3])/100)+((2*a[1])/100)+0.15
@@ -99,7 +92,6 @@ def typeOfPokerCard(x):
             score = 3+((2*a[3])/100)+((2*a[1])/100000)
         return score
 
-    '''对子情况'''
     if a[0] == a[1]:
         score = 2+((2*a[0])/100)+(a[4]/100000)+(a[3]/10000000)+(a[2]/1000000000)
         return score
@@ -113,7 +105,6 @@ def typeOfPokerCard(x):
         score = 2+((2*a[3])/100)+(a[2]/100000)+(a[1]/10000000)+(a[0]/1000000000)
         return score
 
-    '''散牌情况'''
     score = 1+(a[4]/100)+(a[3]/100000)+(a[2]/10000000)+(a[1]/1000000000)+(a[0]/100000000000)
     return score
 
@@ -194,15 +185,11 @@ def getBottomScore():
 
 def checkBestPoker():
     global currentscore1, currentscore2, currentscore3
-    """计算头墩, 规则里面没说头墩有其他情况，当然选择不做其他判断!!。"""
     currentscore1 = getTopScore()
-    '''计算中墩'''
     currentscore2 = getMiddleScore()
-    '''计算底墩，只需在中墩基础上修改数值即可'''
     currentscore3 = getBottomScore()
 
     if currentscore1 <= currentscore2 <= currentscore3:
-        ret = 0
         global shui1, shui2, shui3, score1, score2, score3, currentshui1, currentshui2, currentshui3
         global middlePoker, bottomPoker, topPoker, currentTopPoker, currentMiddlePoker, currentBottomPoker
         if currentshui1+currentshui2+currentshui3 > shui1+shui2+shui3:
@@ -251,7 +238,6 @@ def getPokerCardOne(n1, x1):
 
 
 def printPoker():
-    """前墩"""
     str = ""
     global shui1, shui2, shui3, lastPoker, topPoker, middlePoker, bottomPoker
     for i in range(0, 3):
@@ -261,7 +247,6 @@ def printPoker():
     print(str)
     lastPoker.append(str)
 
-    '''中墩'''
     str = ""
     for i in range(0, 5):
         str += (numToColor(middlePoker[i].color)) + (numToPoker(middlePoker[i].number))
@@ -270,7 +255,6 @@ def printPoker():
     print(str)
     lastPoker.append(str)
 
-    '''后墩'''
     str = ""
     for i in range(0, 5):
         str += (numToColor(bottomPoker[i].color)) + (numToPoker(bottomPoker[i].number))

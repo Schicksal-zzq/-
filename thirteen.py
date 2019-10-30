@@ -1,6 +1,5 @@
 # Author: Administrator
 
-import json
 from thirteenInterface import *
 
 ans1, ans2, ans3 = [], [], []   #标记

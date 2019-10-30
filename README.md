@@ -1,6 +1,6 @@
 ### 一个十三水自动发牌作业
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/52fa073ef3c14c65a99be3c449e7e350)](https://www.codacy.com/manual/blatttree/shisanshui?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=blatttree/shisanshui&amp;utm_campaign=Badge_Grade)![](https://img.shields.io/badge/language-python-blue.svg)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/711765a2303e452cb7f54c730c974c2f)](https://www.codacy.com/manual/Schicksal-zzq/shisanshui?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Schicksal-zzq/shisanshui&amp;utm_campaign=Badge_Grade)![](https://img.shields.io/badge/language-python-blue.svg)
 
 ###运行环境
 

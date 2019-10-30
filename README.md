@@ -8,12 +8,13 @@
 
 python3.7
 
-###编译与运行
+###后端
 
-pycharm上面运行或者命令框python thirteen.py
+下载thirteen.py与thirteenInterface.py，放在同一目录下，运行thirteen.py即可打牌。
 
-###使用方法
+###前端
 
-AI文件已经上传,UI文件由于过大，请用百度网盘下载。
+由于UI文件过大，请用百度网盘下载。
 链接：https://pan.baidu.com/s/1c6uwLlJSjG_8tB6u0yXIkQ 
 提取码：0rvo
+使用方法简单易懂，下载即可知道。

@@ -34,7 +34,9 @@ def initAll():
     currentshui1, currentshui2, currentshui3 = 0.0, 0.0, 0.0
     currentscore1, currentscore2, currentscore3 = 0.0, 0.0, 0.0
 
-    for i in range(0, 15):
+    i = 15
+    while(i)
+        i -= i
         ans1.append(0)
         ans2.append(0)
         ans3.append(0)
@@ -238,31 +240,31 @@ def getPokerCardOne(n1, x1):
 
 
 def printPoker():
-    str = ""
+    str1 = ""
     global shui1, shui2, shui3, lastPoker, topPoker, middlePoker, bottomPoker
     for i in range(0, 3):
-        str += (numToColor(topPoker[i].color)) + (numToPoker(topPoker[i].number))
+        str1 += (numToColor(topPoker[i].color)) + (numToPoker(topPoker[i].number))
         if i < 2:
-            str += ' '
-    print(str)
-    lastPoker.append(str)
+            str1 += ' '
+    print(str1)
+    lastPoker.append(str1)
 
-    str = ""
+    str1 = ""
     for i in range(0, 5):
-        str += (numToColor(middlePoker[i].color)) + (numToPoker(middlePoker[i].number))
+        str1 += (numToColor(middlePoker[i].color)) + (numToPoker(middlePoker[i].number))
         if i < 4:
-            str += ' '
-    print(str)
-    lastPoker.append(str)
+            str1 += ' '
+    print(str1)
+    lastPoker.append(str1)
 
-    str = ""
+    str1 = ""
     for i in range(0, 5):
-        str += (numToColor(bottomPoker[i].color)) + (numToPoker(bottomPoker[i].number))
+        str1 += (numToColor(bottomPoker[i].color)) + (numToPoker(bottomPoker[i].number))
         if i < 4:
-            str += ' '
-    print(str)
+            str1 += ' '
+    print(str1)
     print(shui1+shui2+shui3)
-    lastPoker.append(str)
+    lastPoker.append(str1)
     return lastPoker
 
 ranking()
@@ -275,8 +277,8 @@ while(i):
     getPokerCardOne(0, 0)
     lastPoker = []
     lastPoker = printPoker()
-    id = submitGame(lastPoker)
+    id1 = submitGame(lastPoker)
     #i -= 1
     time.sleep(10)
-    historicalRecordsDetail(id)
+    historicalRecordsDetail(id1)
     historicalRecords(10, 10)

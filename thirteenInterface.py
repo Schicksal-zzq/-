@@ -1,8 +1,6 @@
 # Author: Administrator
 # date: 2019/10/17  16:33
 
-import time
-import json
 import requests
 
 id, token, user_id = 0, '0', 0
@@ -117,7 +115,7 @@ def historicalRecordsDetail(id):
     """
     历史战局详情
     """
-    global  token
+    global token
     url = 'http://api.revth.com/history/'+str(id)
     headers = {'X-Auth-Token': token}
     params = {'id': id}

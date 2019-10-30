@@ -1,0 +1,13 @@
+语言：python
+
+蟒蛇：
+
+    - “ 3.7.4 ”
+
+安装：
+
+    - 点安装-r requirements.txt
+
+脚本：
+
+    - 蟒蛇./source/hello.py

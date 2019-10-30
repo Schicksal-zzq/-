@@ -1,7 +1,7 @@
 # Author: Administrator
 
 import json
-from thirteen_interface import *
+from thirteenInterface import *
 
 ans1, ans2, ans3 = [], [], []   #标记
 shui1, shui2, shui3 = 0.0, 0.0, 0.0     #水水水
@@ -35,8 +35,8 @@ def initAll():
     currentscore1, currentscore2, currentscore3 = 0.0, 0.0, 0.0
 
     i = 15
-    while(i)
-        i -= i
+    while(i):
+        i -= 1
         ans1.append(0)
         ans2.append(0)
         ans3.append(0)
@@ -279,6 +279,6 @@ while(i):
     lastPoker = printPoker()
     id1 = submitGame(lastPoker)
     #i -= 1
-    time.sleep(10)
+
     historicalRecordsDetail(id1)
     historicalRecords(10, 10)
